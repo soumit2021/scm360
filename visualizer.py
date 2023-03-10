@@ -114,4 +114,99 @@ class Visualizer:
 
 
 
+def test_visualizer():
+
+	f = plt.figure()#figsize=(5,8))
+	axs_action = []
+	ncol = 3
+	nrow = 2
+
+	clim = (0,1)
+
+	ax = plt.subplot2grid((nrow, ncol), (0,ncol-1))
+	ax.matshow(np.random.random((2,2)), cmap='RdYlBu_r', clim=clim)
+
+	for action in range(3):
+		row = 1 + action/ncol
+		col = action%ncol
+		ax = plt.subplot2grid((nrow, ncol), (row,col))
+		cax = ax.matshow(np.random.random((2,2)), cmap='RdYlBu_r', clim=clim)
+	
+
+	ax = plt.subplot2grid((nrow, ncol), (0,0), colspan=ncol-1)
+	cbar = f.colorbar(cax, ax=ax)
+
+	plt.show()
+
+
+
+
+class VisualizerSequential:
+
+	def config(self):
+		pass
+
+	def __init__(self, model):
+		self.model = model
+		self.layers = []
+		for layer in self.model.layers:
+			self.layers.append(str(layer.name))
+
+		self.inter_models = dict()
+		model_input = self.model.input
+		for layer in self.layers:
+			self.inter_models[layer] = keras.models.Model(
+								inputs=model_input,
+                                outputs=self.model.get_layer(layer).output)
+		self.config()
+
+
+
+class VisualizerConv1D(VisualizerSequential):
+
+	def config(self):
+
+		self.n_channel = self.model.input.shape[2]
+		n_col = self.n_channel
+		for layer in self.layers:
+			shape = self.inter_models[layer].output.shape
+			if len(shape) == 3:
+				n_col = max(n_col, shape[2])
+
+		self.figshape = (len(self.layers)+1, int(n_col))
+
+
+	def plot(self, x):
+
+		f = plt.figure(figsize=(30,30))	
+		
+		for i in range(self.n_channel):
+			ax = plt.subplot2grid(self.figshape, (0,i))
+			ax.plot(x[0,:,i], '.-')
+			ax.set_title('input, channel %i'%i)
+
+		for i_layer in range(len(self.layers)):
+			layer = self.layers[i_layer]
+			z = self.inter_models[layer].predict(x)
+			print('plotting '+layer)
+			if len(z.shape) == 3:
+				for i in range(z.shape[2]):
+					ax = plt.subplot2grid(self.figshape, (i_layer+1, i))
+					ax.plot(z[0,:,i], '.-')
+					ax.set_title(layer+' filter %i'%i)
+			else:
+				ax = plt.subplot2grid(self.figshape, (i_layer+1, 0))
+				ax.plot(z[0,:], '.-')
+				ax.set_title(layer)
+
+
+		ax.set_ylim(-100,100)
+
+
+	def print_w(self):
+		layer = self.layers[0]
+		ww = self.inter_models[layer].get_weights()
+		for w in ww:
+			print(w.shape)
+			print(w)
 
