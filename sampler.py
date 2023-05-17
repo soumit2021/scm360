@@ -241,3 +241,54 @@ class SinSampler(Sampler):
 
 
 
+def test_SinSampler():
+
+	window_episode = 10
+	window_state = 10
+	noise_amplitude_ratio = 0.5
+	period_range = (10,40)
+	amplitude_range = (5,80)
+	game = 'concat_half_base'
+	instruments = ['fake']
+
+	sampler = SinSampler(game, 
+		window_episode, noise_amplitude_ratio, period_range, amplitude_range)
+	n_episodes = 10
+	"""
+	for i in range(100):
+		plt.plot(sampler.sample(instruments)[0])
+		plt.show()
+		"""
+	fld = os.path.join('data','SinSamplerDB',game+'_B')
+	sampler.build_db(n_episodes, fld)
+
+
+
+def test_PairSampler():
+	fhr = (10,30)
+	n_section = 1
+	max_change_perc = 30.
+	noise_level = 5
+	game = 'randjump'
+	windows_transform = []
+
+	sampler = PairSampler(game, window_episode=180, forecast_horizon_range=fhr, 
+		n_section=n_section, noise_level=noise_level, max_change_perc=max_change_perc, windows_transform=windows_transform)
+	
+	#plt.plot(sampler.sample()[0]);plt.show()
+	#"""
+	n_episodes = 100
+	fld = os.path.join('data','PairSamplerDB',
+		game+'_%i,%i'%(n_episodes, n_section)+str(fhr)+str(windows_transform)+'_B')
+	sampler.build_db(n_episodes, fld)
+	#"""
+
+
+
+
+if __name__ == '__main__':
+	#scan_match()
+	test_SinSampler()
+	#p = [1,2,3,2,1,2,3]
+	#print find_ideal(p)
+	test_PairSampler()
