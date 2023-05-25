@@ -137,3 +137,35 @@ def PerformanceMetrics():
     print('\nGraph is Generated Successfully...!')
     print('==========================================================================================')
     print("\n\n+++++++++++++++++++++++++++++++++++++++ END ++++++++++++++++++++++++++++++++++++")
+def main_screen():
+    window = Tk()
+    window.geometry("600x330")
+    window.title("Healthcare Supply Chain Optimization using Generative Artificial Intelligence")
+    window['background'] = 'lightblue'
+    Label(window, text="Healthcare Supply Chain Optimization using Generative Artificial Intelligence",
+          bg="gray", fg="yellow", width="400", height="4", font=('Times New Roman Bold', 12)).pack()
+    Label(text="", bg="lightblue").pack()
+    Button(text="START", height="2", width="40", fg="darkblue", font=('Times New Roman Bold', 14), command=Dataset).pack()
+    Label(text="", bg="lightblue").pack()
+    Button(text="PREPROCESSING", height="2", width="40", fg="darkblue", font=('Times New Roman Bold', 14),
+           command=Preprocessing).pack()
+    Label(text="", bg="lightblue").pack()
+    Button(text="TRAIN THE MODEL USING DATA", height="2", width="40", fg="darkblue", font=('Times New Roman Bold', 14),
+           command=Tainthemodel).pack()
+    Label(text="", bg="lightblue").pack()
+    Button(text="QLEARNING", height="2", width="40", fg="darkblue", font=('Times New Roman Bold', 14),
+           command=Qlearning).pack()
+    Label(text="", bg="lightblue").pack()
+    Label(text="", bg="lightblue").pack()
+    Button(text="ROUTE OPTIMIZATION", height="2", width="40", fg="darkblue", font=('Times New Roman Bold', 14),
+           command=Routeoptimization).pack()
+    Label(text="", bg="lightblue").pack()
+    Label(text="", bg="lightblue").pack()
+    Button(text="CONSENSUS MECHANISHM", height="2", width="40", fg="darkblue", font=('Times New Roman Bold', 14),
+           command=Consensusmechanism).pack()
+    Label(text="", bg="lightblue").pack()
+    Button(text="PERFORMANCE METRICS", height="2", width="40", fg="darkblue", font=('Times New Roman Bold', 14),
+           command=PerformanceMetrics).pack()
+    Label(text="", bg="lightblue").pack()
+    window.mainloop()
+main_screen()
