@@ -55,10 +55,9 @@ class Market:
 
 	def get_valid_actions(self):
 		if self.empty:
-			return [0, 1]	# wait, open
+			return [0, 1]	# wait and open
 		else:
-			return [0, 2]	# close, keep
-
+			return [0, 2]	# close and keep
 
 	def get_noncash_reward(self, t=None, empty=None):
 		if t is None:
@@ -74,7 +73,6 @@ class Market:
 
 
 	def step(self, action):
-
 		done = False
 		if action == 0:		# wait/close
 			reward = 0.
