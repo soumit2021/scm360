@@ -104,8 +104,6 @@ class Simulator:
 					"""
 
 
-
-
 	def test(self, n_episode, save_per_episode=10, subfld='testing'):
 
 		fld_save = os.path.join(self.fld_save, subfld)
@@ -150,8 +148,6 @@ class Simulator:
 					"""
 					
 
-
-
 	def __init__(self, agent, env, 
 		visualizer, fld_save):
 
@@ -159,9 +155,6 @@ class Simulator:
 		self.env = env
 		self.visualizer = visualizer
 		self.fld_save = fld_save
-
-
-
 
 
 if __name__ == '__main__':
